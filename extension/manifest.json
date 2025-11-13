@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "GraphQLens",
+  "description": "Modern GraphQL Network panel with mocking and a sleek UI.",
+  "version": "0.1.0",
+  "devtools_page": "src/devtools/devtools.html",
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/injected/index.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
