@@ -67,8 +67,8 @@ importers:
         specifier: ^4.1.17
         version: 4.1.17
       '@types/chrome':
-        specifier: ^0.0.264
-        version: 0.0.264
+        specifier: ^0.1.28
+        version: 0.1.28
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
@@ -947,8 +947,8 @@ packages:
   '@tanstack/virtual-core@3.13.12':
     resolution: {integrity: sha512-1YBOJfRHV4sXUmWsFSf5rQor4Ss82G8dQWLRbnk3GA4jeP8hQt1hxXh0tmflpC0dz3VgEv/1+qwPyLeWkQuPFA==}
 
-  '@types/chrome@0.0.264':
-    resolution: {integrity: sha512-BiVsq0f6Jy0l0YTRegh4i4tT5cty+IGfzlvUdCparKUQN41kU6LS3uN0JX9dZZPSqBqF38Ed35hShWt4pfurbQ==}
+  '@types/chrome@0.1.28':
+    resolution: {integrity: sha512-wANMmVt9H8UJeRsk4vlk5IVTTUIdk0J6CJC2ER60fGHTJOFVMuXpGhCqs6fUGw3m9pF1eXEvi+6ejlQZrtGA4A==}
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -3082,7 +3082,7 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.12': {}
 
-  '@types/chrome@0.0.264':
+  '@types/chrome@0.1.28':
     dependencies:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.16
