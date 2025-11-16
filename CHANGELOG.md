@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/CoMfUcIoS/GraphQLens/compare/v1.0.1...v1.0.2) (2025-11-16)
+
+
+### Bug Fixes
+
+* **ci:** set permissions and update artifact filename ([94bd7f7](https://github.com/CoMfUcIoS/GraphQLens/commit/94bd7f75c746febeed1fe473c166999535800ea9))
+
 ## [1.0.1](https://github.com/CoMfUcIoS/GraphQLens/compare/v1.0.0...v1.0.1) (2025-11-16)
 
 
