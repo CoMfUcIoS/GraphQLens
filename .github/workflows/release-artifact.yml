@@ -1,0 +1,49 @@
+---
+name: Release Artifact
+on:
+  release:
+    types: [published]
+jobs:
+  build-and-upload-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build extension
+        run: pnpm build
+      - name: Set zip filename based on release version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/} 
+          ZIP_FILENAME="chrome-extension-${VERSION}.zip"
+          echo "ZIP_FILENAME=$ZIP_FILENAME" >> $GITHUB_ENV  
+      - name: Zip build output
+        run: |
+          cd dist
+          zip -r "../$ZIP_FILENAME" .  
+      - name: Check if zip file exists
+        run: |
+          if [ ! -f "../$ZIP_FILENAME" ]; then
+            echo "Zip file not found!"
+            exit 1
+          fi
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: $ZIP_FILENAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
