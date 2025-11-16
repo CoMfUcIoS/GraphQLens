@@ -27,23 +27,21 @@ jobs:
         run: pnpm build
       - name: Set zip filename based on release version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/} 
+          VERSION=${GITHUB_REF#refs/tags/}
           ZIP_FILENAME="chrome-extension-${VERSION}.zip"
-          echo "ZIP_FILENAME=$ZIP_FILENAME" >> $GITHUB_ENV  
+          echo "ZIP_FILENAME=$ZIP_FILENAME" >> $GITHUB_ENV
       - name: Zip build output
         run: |
-          cd dist
-          zip -r "../$ZIP_FILENAME" .  
+          zip -r "$ZIP_FILENAME" dist
       - name: Check if zip file exists
         run: |
-          if [ ! -f "../$ZIP_FILENAME" ]; then
+          if [ ! -f "$ZIP_FILENAME" ]; then
             echo "Zip file not found!"
             exit 1
           fi
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: $ZIP_FILENAME
+          files: ${{ env.ZIP_FILENAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
