@@ -10,5 +10,6 @@
       "@devtools/*": ["./src/devtools/*"]
     }
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts"],
+  "exclude": ["injected/index.ts"]
 }

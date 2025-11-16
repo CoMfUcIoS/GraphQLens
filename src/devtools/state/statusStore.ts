@@ -25,9 +25,9 @@ interface StatusState {
   requests: ResourceStatus;
   rules: ResourceStatus;
   errors: Partial<Record<StatusKey, string>>;
-  setStatus: (key: StatusKey, status: ResourceStatus) => void;
-  setError: (key: StatusKey, message: string) => void;
-  clearError: (key: StatusKey) => void;
+  setStatus: (_key: StatusKey, _status: ResourceStatus) => void;
+  setError: (_key: StatusKey, _message: string) => void;
+  clearError: (_key: StatusKey) => void;
   reset: () => void;
 }
 
@@ -35,8 +35,8 @@ export const useStatusStore = create<StatusState>((set) => ({
   requests: 'loading',
   rules: 'loading',
   errors: {},
-  setStatus: (_key, _status) =>
-    set(() => ({ [_key]: _status }) as Partial<StatusState>),
+  setStatus: (__key, __status) =>
+    set(() => ({ [__key]: __status }) as Partial<StatusState>),
   setError: (_key, _message) =>
     set((s) => ({ errors: { ...s.errors, [_key]: _message } })),
   clearError: (_key) =>

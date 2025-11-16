@@ -76,10 +76,10 @@ export class ErrorBoundary extends React.Component<
             description={error.message || 'Unknown error'}
             action={
               <div className="flex gap-2">
-                <Button size="xs" variant="outline" onClick={this.handleCopy}>
+                <Button size="sm" variant="outline" onClick={this.handleCopy}>
                   Copy details
                 </Button>
-                <Button size="xs" onClick={this.handleReset}>
+                <Button size="sm" onClick={this.handleReset}>
                   Retry
                 </Button>
               </div>

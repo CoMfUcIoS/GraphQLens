@@ -23,8 +23,14 @@
   const origFetch = window.fetch;
   async function shouldMock() {
     return new Promise((resolve) => {
-      const onMsg = (e) => {
-        if (e.source === window && e.data?.__gqlens === 'RULES') {
+      const onMsg = (e: MessageEvent) => {
+        if (
+          e.source === window &&
+          typeof e.data === 'object' &&
+          e.data !== null &&
+          '__gqlens' in e.data &&
+          (e.data as { __gqlens: string }).__gqlens === 'RULES'
+        ) {
           window.removeEventListener('message', onMsg);
           resolve(e.data.payload ?? { gql_rules: [], gql_enabled: false });
         }
@@ -39,14 +45,27 @@
     });
   }
 
-  window.fetch = async function (input, init) {
-    const { gql_enabled, gql_rules } = await shouldMock();
+  window.fetch = async function (input: RequestInfo | URL, init?: RequestInit) {
+    const mockResult = await shouldMock();
+    const { gql_enabled, gql_rules } = mockResult as {
+      gql_enabled: boolean;
+      gql_rules: unknown[];
+    };
 
     if (!gql_enabled || (init?.method ?? 'GET') !== 'POST')
       return origFetch(input, init);
 
     try {
-      const url = typeof input === 'string' ? input : input.url;
+      let url: string;
+      if (typeof input === 'string') {
+        url = input;
+      } else if (input instanceof Request) {
+        url = input.url;
+      } else if (input instanceof URL) {
+        url = input.toString();
+      } else {
+        url = '';
+      }
       const text =
         init?.body && typeof init.body !== 'string'
           ? ''
@@ -118,7 +137,9 @@
         const varsObj = varsRaw ? safeJSONParse(varsRaw) : undefined;
         requestOpName = op;
         requestVariables =
-          varsObj && typeof varsObj === 'object' ? varsObj : {};
+          varsObj && typeof varsObj === 'object'
+            ? (varsObj as Record<string, unknown>)
+            : ({} as Record<string, unknown>);
         parseMode = 'urlencoded';
       } else if (parsed) {
         if (Array.isArray(parsed)) {
@@ -127,8 +148,17 @@
           );
           return origFetch(input, init);
         }
-        requestOpName = parsed.operationName || '';
-        requestVariables = parsed.variables || {};
+        if (
+          typeof parsed === 'object' &&
+          parsed !== null &&
+          'operationName' in parsed &&
+          'variables' in parsed
+        ) {
+          requestOpName =
+            (parsed as { operationName?: string }).operationName || '';
+          requestVariables =
+            (parsed as { variables?: Record<string, unknown> }).variables || {};
+        }
       } else if (!parsed) {
         // Attempt to extract operation name from raw GraphQL query text (e.g. 'query GetAccountsForList {...')
         const opMatch = /(?:query|mutation|subscription)\s+(\w+)/.exec(trimmed);
@@ -149,7 +179,8 @@
       // deepEqual already defined above
 
       // Find all matching rules and prioritize by specificity
-      const matchingRules = gql_rules.filter((r) => {
+      const matchingRules = gql_rules.filter((r: unknown) => {
+        if (typeof r !== 'object' || r === null) return false;
         // Match if the endpoint is contained in the URL or vice versa
         const endpointMatch =
           url.includes(r.endpoint) ||
@@ -192,9 +223,23 @@
       });
 
       // Prioritize rules with variables over wildcard rules
-      const match = matchingRules.sort((a, b) => {
-        const aHasVars = a.variables && Object.keys(a.variables).length > 0;
-        const bHasVars = b.variables && Object.keys(b.variables).length > 0;
+      const match = matchingRules.sort((a: unknown, b: unknown) => {
+        const aHasVars =
+          typeof a.variables === 'object' &&
+          a.variables !== null &&
+          Array.isArray(a.variables)
+            ? a.variables.length > 0
+            : typeof a.variables === 'object' &&
+              a.variables !== null &&
+              Object.keys(a.variables).length > 0;
+        const bHasVars =
+          typeof b.variables === 'object' &&
+          b.variables !== null &&
+          Array.isArray(b.variables)
+            ? b.variables.length > 0
+            : typeof b.variables === 'object' &&
+              b.variables !== null &&
+              Object.keys(b.variables).length > 0;
 
         // Rules with variables come first
         if (aHasVars && !bHasVars) return -1;
@@ -203,7 +248,12 @@
         // If both have variables, prefer the one with more matching keys
         if (aHasVars && bHasVars) {
           return (
-            Object.keys(b.variables).length - Object.keys(a.variables).length
+            (Array.isArray(b.variables)
+              ? b.variables.length
+              : Object.keys(b.variables).length) -
+            (Array.isArray(a.variables)
+              ? a.variables.length
+              : Object.keys(a.variables).length)
           );
         }
 
@@ -233,9 +283,15 @@
       );
 
       // Return the response as-is (it should already be in the correct format)
-      const body = JSON.stringify(match.response);
+      interface GqlRule {
+        response: unknown;
+        statusCode: number;
+        [key: string]: unknown;
+      }
+      const ruleMatch = match as GqlRule;
+      const body = JSON.stringify(ruleMatch.response);
       return new Response(body, {
-        status: match.statusCode,
+        status: ruleMatch.statusCode,
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (err) {

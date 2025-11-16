@@ -33,7 +33,7 @@ type Rule = {
 type RuleModalProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  onCreate: (_rule: Rule) => void;
+  onCreate: (rule: Rule) => void;
   initialData?: {
     operationName: string;
     endpoint: string;
@@ -41,7 +41,7 @@ type RuleModalProps = {
     variables?: string;
   } | null;
   editRule?: Rule | null;
-  onUpdate?: (_rule: Rule) => void;
+  onUpdate?: (rule: Rule) => void;
 };
 
 export default function RuleModal({

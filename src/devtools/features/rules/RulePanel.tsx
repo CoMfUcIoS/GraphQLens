@@ -67,7 +67,9 @@ function RulePanel({
           <input
             type="checkbox"
             checked={table.getIsAllRowsSelected()}
-            indeterminate={table.getIsSomeRowsSelected()}
+            ref={(el) => {
+              if (el) el.indeterminate = table.getIsSomeRowsSelected();
+            }}
             onChange={table.getToggleAllRowsSelectedHandler()}
             className="cursor-pointer"
           />
@@ -251,7 +253,7 @@ function RulePanel({
                     // Don't open modal if clicking on checkbox, edit, or delete buttons
                     const target = e.target as HTMLElement;
                     if (
-                      target.type === 'checkbox' ||
+                      (target as HTMLInputElement).type === 'checkbox' ||
                       target.closest('button') ||
                       target.tagName === 'INPUT'
                     ) {
