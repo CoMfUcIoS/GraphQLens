@@ -3,6 +3,8 @@ name: Release Artifact
 on:
   release:
     types: [published]
+permissions:
+  contents: write
 jobs:
   build-and-upload-artifact:
     runs-on: ubuntu-latest
@@ -28,7 +30,7 @@ jobs:
       - name: Set zip filename based on release version
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          ZIP_FILENAME="chrome-extension-${VERSION}.zip"
+          ZIP_FILENAME="graphQLens-${VERSION}.zip"
           echo "ZIP_FILENAME=$ZIP_FILENAME" >> $GITHUB_ENV
       - name: Zip build output
         run: |
