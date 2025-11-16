@@ -1,6 +1,6 @@
 # GraphQLens
 
-GraphQLens is a modern, performant Chrome DevTools extension for inspecting and mocking GraphQL network traffic. It provides a powerful UI for developers to capture, analyze, and mock GraphQL requests and responses directly within the browser, with all data stored locally for privacy.
+GraphQLens is a modern, performant Chrome DevTools extension (Chrome only) for inspecting and mocking GraphQL network traffic. It provides a powerful UI for developers to capture, analyze, and mock GraphQL requests and responses directly within the browser, with all data stored locally for privacy.
 
 ## Features
 
@@ -12,6 +12,12 @@ GraphQLens is a modern, performant Chrome DevTools extension for inspecting and 
 - **Snappy UI:** Virtualized lists, minimal re-rendering, and debounced parsing for high performance, even with large traffic.
 - **Privacy-First:** All data and rules are stored locally. No remote calls or telemetry.
 - **DX:** Built with pnpm, Vite, TypeScript, ESLint, Prettier, TailwindCSS, Zustand, and Radix UI.
+
+## Build System
+
+- Uses [`@crxjs/vite-plugin`](https://github.com/crxjs/chrome-extension-tools) to bundle the extension for Chrome.
+- All build configuration is in `vite.config.ts`.
+- Outputs to the `dist/` directory for loading as an unpacked extension.
 
 ## Quick Start
 
@@ -30,6 +36,17 @@ Then load the `dist/` directory as an **Unpacked extension** in `chrome://extens
 - `pnpm format` – Format the codebase
 
 ## Architecture
+
+## Manifest & Permissions
+
+- **Manifest Version:** 3
+- **Permissions:** `storage`, `scripting`, `tabs`
+- **Host Permissions:** `<all_urls>`
+- **Background:** Service worker (`src/background/index.ts`)
+- **Content Scripts:** `src/content/index.ts` (runs on all URLs)
+- **Web Accessible Resources:** `src/injected/index.js`
+
+See `extension/manifest.json` for full details.
 
 ```mermaid
 flowchart TD
@@ -103,6 +120,17 @@ All data stays in your browser storage. No remote calls or telemetry are made. R
 ## Onboarding & Help
 
 On first launch, an onboarding overlay will guide you through the main features. You can revisit these concepts later in the Help section (coming soon).
+
+## Contributing
+
+Pull requests are welcome! To contribute:
+
+1. Fork the repository and create a new branch.
+2. Run `pnpm install` to set up dependencies.
+3. Use `pnpm dev` for development and `pnpm lint`/`pnpm format` to ensure code quality.
+4. Submit your PR with a clear description of your changes.
+
+For questions or issues, please open an issue on GitHub.
 
 ## Development
 
