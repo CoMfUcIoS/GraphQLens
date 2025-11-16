@@ -1,0 +1,10 @@
+{
+  "release-type": "node",
+  "package-name": "graphqlens",
+  "bump-minor-pre-major": true,
+  "changelog-path": "CHANGELOG.md",
+  "include-component-in-tag": false,
+  "monorepo-tags": false,
+  "pull-request-title-pattern": "chore: release${component} ${version}",
+  "branches": ["main"]
+}
