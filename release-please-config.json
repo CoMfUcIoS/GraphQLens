@@ -1,10 +1,15 @@
 {
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "node",
-  "package-name": "graphqlens",
   "bump-minor-pre-major": true,
   "changelog-path": "CHANGELOG.md",
   "include-component-in-tag": false,
   "monorepo-tags": false,
   "pull-request-title-pattern": "chore: release${component} ${version}",
-  "branches": ["main"]
+  "branches": ["main"],
+  "packages": {
+    ".": {
+      "package-name": "graphqlens"
+    }
+  }
 }
