@@ -204,9 +204,27 @@ export default function RequestsPage() {
 
   // Listen for mocked requests from background script
   useEffect(() => {
-    const unsubscribe = onPortMessage((msg) => {
-      if (msg?.type === 'MOCKED_REQUEST') {
-        const { url, body: requestBody, response, statusCode } = msg.payload;
+    type MockedRequestMsg = {
+      type: 'MOCKED_REQUEST';
+      payload: {
+        url: string;
+        body: string;
+        response: unknown;
+        statusCode: number;
+      };
+    };
+    const unsubscribe = onPortMessage((msg: unknown) => {
+      if (
+        typeof msg === 'object' &&
+        msg !== null &&
+        (msg as MockedRequestMsg).type === 'MOCKED_REQUEST'
+      ) {
+        const {
+          url,
+          body: requestBody,
+          response,
+          statusCode,
+        } = (msg as MockedRequestMsg).payload;
 
         // Create a mock HAR entry for the mocked request
         const mockHar = {

@@ -44,7 +44,11 @@ function connectPort() {
     }
   } catch (err: unknown) {
     connecting = false;
-    scheduleReconnect('connect-error', err?.message);
+    const message =
+      typeof err === 'object' && err && 'message' in err
+        ? (err as { message?: string }).message
+        : String(err);
+    scheduleReconnect('connect-error', message);
   }
 }
 
@@ -103,7 +107,6 @@ export function safePostMessage() {
     }
     console.warn('[GraphQLens] postMessage throw', m);
   }
-  // @ts-expect-error Chrome lastError may exist
   const lastErr = chrome.runtime.lastError;
   if (lastErr) {
     const m = String(lastErr.message || '');
@@ -119,14 +122,14 @@ export function safePostMessage() {
 }
 
 // Message listeners
-const messageListeners = new Set<(msg: unknown) => void>();
+const messageListeners = new Set<(_msg: unknown) => void>();
 
 function attachListeners() {
   if (!port) return;
   // Avoid attaching multiple times: clear existing listeners by recreating collection? Chrome API doesn't expose removal of anonymous, so rely on new port instance.
-  port.onMessage.addListener((_msg) => {
+  port.onMessage.addListener((__msg) => {
     // _msg is intentionally unused; kept for API compatibility
-    messageListeners.forEach((listener) => listener(_msg));
+    messageListeners.forEach((listener) => listener(__msg));
   });
 }
 

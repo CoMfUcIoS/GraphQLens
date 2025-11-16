@@ -15,5 +15,6 @@
       "@devtools/*": ["src/devtools/*"]
     }
   },
-  "include": ["src", "extension", "vite.config.ts"]
+  "include": ["src", "extension", "vite.config.ts"],
+  "exclude": ["src/injected/index.ts"]
 }
