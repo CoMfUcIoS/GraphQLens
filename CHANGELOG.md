@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/CoMfUcIoS/GraphQLens/compare/v1.0.0...v1.0.1) (2025-11-16)
+
+
+### Bug Fixes
+
+* **ci:** correct zip path and env usage in release workflow ([fc4b133](https://github.com/CoMfUcIoS/GraphQLens/commit/fc4b1330bcfd18b2d220ac7c12b36ce70c844963))
+
 ## 1.0.0 (2025-11-16)
 
 
