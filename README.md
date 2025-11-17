@@ -136,8 +136,17 @@ For questions or issues, please open an issue on GitHub.
 
 This project uses pnpm, Vite, TypeScript, React, Zustand, TailwindCSS, and Radix UI. See `package.json` for all dependencies.
 
----
-
 ## License
 
-GPL-3.0-only
+GPL-3.0-or-later. See [LICENSE](./LICENSE).
+© 2025 Ioannis Karasavvaidis
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
+
+---
+
+## Support
+
+If GraphQLens has helped you, consider [sponsoring me on GitHub](https://github.com/sponsors/comfucios) or [buy me a coffee](https://www.buymeacoffee.com/comfucios).
