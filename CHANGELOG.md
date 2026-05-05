@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/CoMfUcIoS/GraphQLens/compare/v1.0.2...v1.0.3) (2026-05-05)
+
+
+### Bug Fixes
+
+* **release:** Forcing a new release ([#37](https://github.com/CoMfUcIoS/GraphQLens/issues/37)) ([f5db0fe](https://github.com/CoMfUcIoS/GraphQLens/commit/f5db0fe15c3107da18bc6c31f1ff27c3fc55aa6b))
+
 ## [1.0.2](https://github.com/CoMfUcIoS/GraphQLens/compare/v1.0.1...v1.0.2) (2025-11-16)
 
 
